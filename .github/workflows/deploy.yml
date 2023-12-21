@@ -40,15 +40,16 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: 🐳 Create a Docker Container for redis
-        run: docker build -t redis:latest -f ./dockerfile .
-      - name: 📬 Upload Redis image to AWS container register
+      - name: 🐳 Create a Docker Container for NGINX
+        run: docker build -t nginx:latest -f ./AWS/nginx/Dockerfile .
+      - name: 📬 Upload NGINX image to AWS container register
+
         run: |
           service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
           aws lightsail push-container-image \
             --region ${{ env.AWS_REGION }} \
             --service-name ${service_name} \
-            --label redis \
-            --image redis:latest
+            --label nginx \
+            --image nginx:latest
       - name: =========== All done. Cleaning up ♻️  ===========
         run: ls
